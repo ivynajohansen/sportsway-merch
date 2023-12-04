@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Eiger</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <meta name="csrf-token" content="{{ csrf_token() }}"> -->
+  <link rel="icon" href="{{ url_for('static', filename='images/favicon_io/favicon.ico') }}" type="image/x-icon">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+ 
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link href="https://fonts.cdnfonts.com/css/noto-sans-bengali" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/solid.css">
+  
+  {% block script %}{% endblock %}
+</head>
+
+<body>
+    <header class= "d-flex justify-content-between align-items-center px-5">
+        <div class = "ml-3">
+            <a href="#"><img style = "height: 70px;" src="{{ url_for('static', filename='images/logo.png') }}"></a>
+        </div>
+        <div class = "h-100">
+            <ul class="menu mb-0 h-100">
+                <li><a href="#">Configuration</a></li>
+            </ul>
+        </div>
+    </header>
+
+    {% set currentRoute = request.path %}
+
+    {% set mfpRoutes = ['/mfp/company-target', '/mfp/rs-monthly-breakdown', '/mfp/detailed-retail-planning', '/mfp/reconciliation', '/mfp/adjust-mc-3', '/mfp/details-breakdown'] %}
+    {% set isActive = currentRoute in mfpRoutes %}
+
+    <div class = "layout-body">
+        <div class = "sidebar-container">
+            <div class = "sidebar-left">
+                <div class="sidebar-logo" data-menu="MFP"><a href="#" class = "{% if isActive %} active {% endif %}"><img style = "height: 20px;" src="{{ url_for('static', filename='images/MFP.png') }}" title="MFP"><img class = "sidebar-pointer" style = "height: 15px;" src="{{ url_for('static', filename='images/sidebar-pointer.png') }}"></a></div>
+            </div>
+            <div class="sidebar-right h-100">
+                <ul class="sidebar p-0">
+                    <li class = "sidebar-menu">MFP</li>
+                    <li>
+                        <a href="{{ url_for('mfp.companyTarget') }}" class="sidebar-submenu {% if currentRoute == '/mfp/company-target' %} active {% endif %}">Company Target</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('mfp.rsMonthly') }}" class="sidebar-submenu {% if currentRoute == '/mfp/rs-monthly-breakdown' %} active {% endif %}">R&S Monthly Breakdown</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('mfp.drp') }}" class="sidebar-submenu {% if currentRoute == '/mfp/detailed-retail-planning' %} active {% endif %}">Detailed Retail Planning</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('mfp.reconciliation') }}" class="sidebar-submenu {% if currentRoute == '/mfp/reconciliation' %} active {% endif %}">Reconciliation</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('mfp.adjustMc3') }}" class="sidebar-submenu {% if currentRoute == '/mfp/adjust-mc-3' %} active {% endif %}">MC Lv 3 Planning</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('mfp.dsp') }}" class="sidebar-submenu {% if currentRoute == '/mfp/details-breakdown' %} active {% endif %}">Details Sales Plan</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class = "content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+   
+    <footer class="footer px-5 py-2">
+        <div class = "mx-2 text-center"><a href="#"><img style = "height: 50px;" src="{{ url_for('static', filename='images/logo-white.png') }}"></a></div>
+        <hr>
+        <div class = "text-center copyright"><p>Copyright © 2023 Eigerindo Multi Produk Industri, Inc. All rights reserved.</p></div>
+    </footer>
+
+</body>
+
+</html>
