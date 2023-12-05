@@ -9,7 +9,10 @@ app.config['SECRET_KEY'] = '7643627136296035'  # Replace with a strong secret ke
 csrf = CSRFProtect(app)
 
 from routes.mfp import mfp_blueprint
+from routes.auth import auth_blueprint
+
 app.register_blueprint(mfp_blueprint, url_prefix='/mfp')
+app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
 class MyHandler(FileSystemEventHandler):
     def on_modified(self, event):

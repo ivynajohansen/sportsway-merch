@@ -1,0 +1,44 @@
+{% extends 'layoutLogin.html' %}
+
+{% block form %}
+
+<form class="form px-5 pb-4 pt-4" id="login_form" action="/dashboard">
+    {{ form.hidden_tag() }}
+    <div class="form-title form-group mb-4">
+        <h4>Log in to Eiger</h4>
+    </div>
+
+    <div class = "d-flex justify-content-center">
+        <div class="form-group m-0 p-0">
+            <div class="form-group mb-3">
+                <div class="d-flex justify-content-center">
+                    <input class="form-control" type="text" placeholder="Username" id = "username" required/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="d-flex justify-content-center">
+                    <input class="form-control" type="password" placeholder="Password" id = "password" required/>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!--Buttons-->
+    <div class="text-center d-block">
+        <p class = "error-message text-danger p-0 m-0"></p>
+        <button type="submit" class="primary-btn mt-2 mb-4" id="employeelogin_submit">Login</button>
+    </div>  
+        
+    </div>
+
+</form>
+
+<script>
+    document.getElementById('login_form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        window.location.href = '/mfp/company-target';
+    });
+</script>
+
+{% endblock %}
