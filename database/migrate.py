@@ -1,7 +1,6 @@
 import sys
 from pathlib import Path
 
-from flask import Flask
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 
@@ -13,6 +12,7 @@ from db import app, db
 migrate = Migrate(app, db)
 
 from models.user import User
+from models.companyTarget import CompanyTarget
 
 if __name__ == '__main__':
     with app.app_context():

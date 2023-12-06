@@ -5,13 +5,13 @@ mfp_blueprint = Blueprint('mfp', __name__)
 # MASIH PAKAI LAYOUT
 
 
-@mfp_blueprint.route('/layout')
+@mfp_blueprint.route('/layout', methods=['GET'])
 def layout():
     return render_template('layout.html')
 
-@mfp_blueprint.route('/company-target')
+@mfp_blueprint.route('/company-target', methods=['GET'])
 def companyTarget():
-    return render_template('layout.html')
+    return render_template('mfp/company-target.html')
 
 @mfp_blueprint.route('/rs-monthly-breakdown')
 def rsMonthly():
@@ -34,3 +34,10 @@ def adjustMc3():
 @mfp_blueprint.route('/details-breakdown')
 def dsp():
     return render_template('layout.html')
+
+# BACKEND
+
+@mfp_blueprint.route('/get-target', methods=['GET'])
+def getTarget():
+    from controllers.TargetController import getData
+    return getData()
