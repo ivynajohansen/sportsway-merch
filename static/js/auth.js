@@ -1,4 +1,4 @@
-var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+var csrfToken = String(document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
 
 document.addEventListener('DOMContentLoaded', function () {
     var loginForm = document.getElementById('login_form');
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var password = document.getElementById('password').value;
         var formData = {
             username: username,
-            password: password
+            password: password,
         };
 
         // Make a POST request using the Fetch API
@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': '*/*',
+                'Accept-Encoding' : 'gzip, deflate, br',
+                'Connection' : 'keep-alive',
                 'X-CSRF-Token': csrfToken
             },
             body: JSON.stringify(formData)
