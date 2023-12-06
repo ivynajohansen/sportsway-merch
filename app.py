@@ -2,6 +2,7 @@ import os
 import platform
 
 from flask_wtf.csrf import CSRFProtect
+from flask_cors import CORS
 from watchdog.observers import Observer #updates if code changes
 from watchdog.events import FileSystemEventHandler
 from dotenv import load_dotenv
@@ -16,6 +17,7 @@ load_dotenv()
 # app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('CSRF_KEY')
 csrf = CSRFProtect(app)
+CORS(app)
 
 app.register_blueprint(mfp_blueprint, url_prefix='/mfp')
 app.register_blueprint(auth_blueprint, url_prefix='/auth')

@@ -3,6 +3,9 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
+# RUN BEFORE PUSHING
+pip freeze > requirements.txt
+
 # For MIGRATING TABLES
 python database/migrate.py db init
 python database/migrate.py db migrate

@@ -4,8 +4,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 
-# from app import app
-
 load_dotenv()
 
 app = Flask(__name__)
