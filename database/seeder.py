@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+import random
 
 from faker import Faker
 from sqlalchemy.exc import IntegrityError
@@ -9,22 +10,27 @@ from werkzeug.security import generate_password_hash
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 load_dotenv(Path(__file__).resolve().parents[1] / '.env')
 
-from db import db, app
+from db import get_db, app
 
-from models.user import User
-from models.companyTarget import CompanyTarget
+from models.User import User
+from models.CompanyTarget import CompanyTarget
 from sqlalchemy.exc import IntegrityError
-from decimal import Decimal
 
 fake = Faker()
+db = get_db()
 
+# seed users with random username
+# password follows username
+# role is random: admin, superadmin, or staff
 def seed_users(num_users):
+    ROLES = ['admin', 'superadmin', 'staff']
     for _ in range(num_users):
         name = fake.user_name()
+        role = random.choice(ROLES)
         user = User(
             username=name,
-            # password=generate_password_hash(fake.password(special_chars=False, digits=True, upper_case=True, lower_case=True)),
             password=generate_password_hash(name),
+            role=role,
         )
         db.session.add(user)
         try:
@@ -32,7 +38,7 @@ def seed_users(num_users):
         except IntegrityError:
             db.session.rollback()
 
-
+# seed company target with specified data
 def seed_company_target():
     data = [
         {'channel': 'WHOLESALE', 'proportion': 20.03, 'total_sales': 16051268189.022001},
@@ -53,6 +59,7 @@ def seed_company_target():
         except IntegrityError:
             db.session.rollback()
 
+# run this specific file to seed all tables. Comment some lines if not needed.
 if __name__ == '__main__':
     with app.app_context():
         seed_users(3)

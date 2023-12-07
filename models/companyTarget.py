@@ -3,7 +3,9 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-from db import db
+from db import get_db
+
+db = get_db()
 
 class CompanyTarget(db.Model):
     __tablename__ = 'company_target'

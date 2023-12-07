@@ -45,10 +45,10 @@
                 <ul class="sidebar p-0">
                     <li class = "sidebar-menu">MFP</li>
                     <li>
-                        <a href="{{ url_for('mfp.companyTarget') }}" class="sidebar-submenu {% if currentRoute == '/mfp/company-target' %} active {% endif %}">Company Target</a>
+                        <a href="{{ url_for('mfp.company_target') }}" class="sidebar-submenu {% if currentRoute == '/mfp/company-target' %} active {% endif %}">Company Target</a>
                     </li>
                     <li>
-                        <a href="{{ url_for('mfp.rsMonthly') }}" class="sidebar-submenu {% if currentRoute == '/mfp/rs-monthly-breakdown' %} active {% endif %}">R&S Monthly Breakdown</a>
+                        <a href="{{ url_for('mfp.rs_monthly') }}" class="sidebar-submenu {% if currentRoute == '/mfp/rs-monthly-breakdown' %} active {% endif %}">R&S Monthly Breakdown</a>
                     </li>
                     <li>
                         <a href="{{ url_for('mfp.drp') }}" class="sidebar-submenu {% if currentRoute == '/mfp/detailed-retail-planning' %} active {% endif %}">Detailed Retail Planning</a>
@@ -57,7 +57,7 @@
                         <a href="{{ url_for('mfp.reconciliation') }}" class="sidebar-submenu {% if currentRoute == '/mfp/reconciliation' %} active {% endif %}">Reconciliation</a>
                     </li>
                     <li>
-                        <a href="{{ url_for('mfp.adjustMc3') }}" class="sidebar-submenu {% if currentRoute == '/mfp/adjust-mc-3' %} active {% endif %}">MC Lv 3 Planning</a>
+                        <a href="{{ url_for('mfp.adjust_mc3') }}" class="sidebar-submenu {% if currentRoute == '/mfp/adjust-mc-3' %} active {% endif %}">MC Lv 3 Planning</a>
                     </li>
                     <li>
                         <a href="{{ url_for('mfp.dsp') }}" class="sidebar-submenu {% if currentRoute == '/mfp/details-breakdown' %} active {% endif %}">Details Sales Plan</a>

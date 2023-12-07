@@ -7,8 +7,9 @@ from flask import jsonify
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-def getData():
-    from models.companyTarget import CompanyTarget
+# display all data of Company Target
+def get_data():
+    from models.CompanyTarget import CompanyTarget
     try:
         data = CompanyTarget.query.all()
         serialized_data = []

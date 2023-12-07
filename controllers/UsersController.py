@@ -9,7 +9,7 @@ from flask import jsonify
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 def authenticate_user(json_data):
-    from models.user import User
+    from models.User import User
     try:
         username = json_data['username']
         password = json_data['password']
