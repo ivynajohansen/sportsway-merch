@@ -19,8 +19,8 @@ from sqlalchemy.exc import IntegrityError
 fake = Faker()
 db = get_db()
 
-# seed users with random username
-# password follows username
+# seed users with random USERNAME
+# PASSWORD follows USERNAME
 # role is random: admin, superadmin, or staff
 def seed_users(num_users):
     ROLES = ['admin', 'superadmin', 'staff']
@@ -28,9 +28,9 @@ def seed_users(num_users):
         name = fake.user_name()
         role = random.choice(ROLES)
         user = User(
-            username=name,
-            password=generate_password_hash(name),
-            role=role,
+            USERNAME=name,
+            PASSWORD=generate_password_hash(name),
+            ROLE=role,
         )
         db.session.add(user)
         try:
@@ -41,15 +41,15 @@ def seed_users(num_users):
 # seed company target with specified data
 def seed_company_target():
     data = [
-        {'channel': 'WHOLESALE', 'proportion': 20.03, 'total_sales': 16051268189.022001},
-        {'channel': 'RETAIL', 'proportion': 66.08, 'total_sales': 52953959157.792},
-        {'channel': 'E-COMMERCE', 'proportion': 13.89, 'total_sales': 11130909393.186}
+        {'CHANNEL': 'WHOLESALE', 'PROPORTION': 20.03, 'TOTAL_SALES': 16051268189.022001},
+        {'CHANNEL': 'RETAIL', 'PROPORTION': 66.08, 'TOTAL_SALES': 52953959157.792},
+        {'CHANNEL': 'E-COMMERCE', 'PROPORTION': 13.89, 'TOTAL_SALES': 11130909393.186}
     ]
     for entry in data:
         target = CompanyTarget(
-            channel=entry['channel'],
-            total_sales=entry['total_sales'],
-            proportion=entry['proportion']
+            CHANNEL=entry['CHANNEL'],
+            TOTAL_SALES=entry['TOTAL_SALES'],
+            PROPORTION=entry['PROPORTION']
         )
 
         db.session.add(target)

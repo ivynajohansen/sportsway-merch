@@ -11,16 +11,16 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 def authenticate_user(json_data):
     from models.User import User
     try:
-        username = json_data['username']
-        password = json_data['password']
+        USERNAME = json_data['USERNAME']
+        PASSWORD = json_data['PASSWORD']
 
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(USERNAME=USERNAME).first()
 
         if user:
-            if check_password_hash(user.password, password):
+            if check_password_hash(user.PASSWORD, PASSWORD):
                 return jsonify({"message": "Authentication successful"}), 200
             else:
-                return jsonify({"message": "Incorrect username or password"}), 401
+                return jsonify({"message": "Incorrect USERNAME or PASSWORD"}), 401
         else:
             return jsonify({"message": "User not found"}), 401
     except Exception as e:

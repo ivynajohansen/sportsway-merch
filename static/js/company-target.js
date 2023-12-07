@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const row = thead.insertRow();
 
         uniqueKeys.forEach(key => {
-            if (key !== 'id') {
+            if (key !== 'ID') {
                 const th = document.createElement('th');
                 const text = document.createTextNode(key);
                 th.appendChild(text);
@@ -104,10 +104,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         data.forEach((obj, index) => {
             const tr = tbody.insertRow();
-            const id = obj['id'];
+            const id = obj['ID'];
 
             uniqueKeys.forEach(key => {
-                if (key !== 'id') {
+                if (key !== 'ID') {
                     const cell = tr.insertCell();
         
                     if (key !== 'CHANNEL') {
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
         totalRow.classList.add('table-total');
 
         uniqueKeys.forEach((key, index) => {
-            if (key !== 'id' && key !== 'CHANNEL') {
+            if (key !== 'ID' && key !== 'CHANNEL') {
                 const totalCell = totalRow.insertCell();
                 totalCell.setAttribute('data-column', key);
                 const total = data.reduce((acc, obj) => acc + (parseFloat(obj[key]) || 0), 0);
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let tr = newRow;
     
         uniqueKeys.forEach((key, index) => {
-            if (key !== 'id') {
+            if (key !== 'ID') {
                 const cell = newRow.insertCell();
                 const input = document.createElement('input');
                 input.value = '';
@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (index > 1) calculateSum(index - 1);
                         if (index < columnNumber) {
                             // Move focus to the next input box
-                            uniqueKeys[index + 1] !== 'id' && document.querySelector(`[data_id="${newId}"][data_column="${uniqueKeys[index + 1]}"] input`).focus();
+                            uniqueKeys[index + 1] !== 'ID' && document.querySelector(`[data_id="${newId}"][data_column="${uniqueKeys[index + 1]}"] input`).focus();
                         } else {
                             // If it's the last input box, blur to trigger any subsequent logic
                             input.blur();

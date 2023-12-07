@@ -30,8 +30,8 @@ def reconciliation():
 def adjust_mc3():
     return render_template('layout.html')
 
-@mfp_blueprint.route('/details-breakdown')
-def dsp():
+@mfp_blueprint.route('/detailed-sales-plan')
+def detailed_sales_plan():
     return render_template('layout.html')
 
 # BACKEND

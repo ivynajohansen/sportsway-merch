@@ -15,10 +15,10 @@ def get_data():
         serialized_data = []
         for item in data:
             serialized_data.append({
-                'id': item.id,
-                'channel': item.channel,
-                'total_sales': item.total_sales,
-                'proportion': item.proportion,
+                'ID': item.ID,
+                'CHANNEL': item.CHANNEL,
+                'TOTAL_SALES': item.TOTAL_SALES,
+                'PROPORTION': item.PROPORTION,
             })
         return jsonify(serialized_data)
 
