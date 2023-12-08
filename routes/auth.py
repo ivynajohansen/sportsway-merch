@@ -11,11 +11,13 @@ auth_blueprint = Blueprint('auth', __name__)
 @auth_blueprint.route('/login', methods=['GET'])
 def login():
     csrf_field = generate_csrf()
-    return render_template('login.html', csrf_field=csrf_field)
+    error_message = request.args.get('error_message', '')
+    return render_template('login.html', csrf_field=csrf_field, error_message=error_message)
 
 # authorization after username and password input
 @auth_blueprint.route('/login', methods=['POST'])
 def login_auth():
     from controllers.UsersController import authenticate_user
-    json_data = request.get_json()
-    return authenticate_user(json_data)
+    # json_data = request.get_json()
+    # return authenticate_user(json_data)
+    return authenticate_user()

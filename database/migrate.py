@@ -16,6 +16,7 @@ from models.CompanyTarget import CompanyTarget
 from models.RsMonthly import RsMonthly
 from models.DetailedRetailPlanning import DetailedRetailPlanning
 from models.Reconciliation import Reconciliation
+from models.Details import Details
 from models.DetailedSalesPlan import get_detailed_sales_plan_classes
 
 DetailedSalesPlanWholesale, DetailedSalesPlanRetail, DetailedSalesPlanEcommerce = get_detailed_sales_plan_classes()
