@@ -10,7 +10,7 @@ db = get_db()
 class DetailedRetailPlanning(db.Model):
     __tablename__ = 'retail_plan_2023'
     ID = db.Column(db.Integer, primary_key=True)
-    GROUP = db.Column(db.String(20), unique=True, nullable=False)
+    GROUP = db.Column(db.String(20), nullable=False)
     PERIOD = db.Column(db.TIMESTAMP, nullable=False)
     PROPORTION = db.Column(db.Float, nullable=False)
     MONTHLY_TARGET = db.Column(db.Double, nullable=False)

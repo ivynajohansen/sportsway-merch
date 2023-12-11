@@ -10,11 +10,11 @@ def get_detailed_sales_plan_classes():
     class DetailedSalesPlanWholesale(db.Model):
         __tablename__ = 'final_detailed_wholesale_sales_plan'
         ID = db.Column(db.Integer, primary_key=True)
-        CHANNEL = db.Column(db.String(20), unique=True, nullable=False)
-        SITE = db.Column(db.String(20), unique=True, nullable=False)
+        CHANNEL = db.Column(db.String(20), nullable=False)
+        SITE = db.Column(db.String(20), nullable=False)
         PERIOD = db.Column(db.TIMESTAMP, nullable=False)
         MONTHLY_TARGET = db.Column(db.Double, nullable=False)
-        MGH_3 = db.Column(db.String(20), unique=True, nullable=False)
+        MGH_3 = db.Column(db.String(20), nullable=False)
         MGH_CH_PROP = db.Column(db.Float, nullable=False)
         SLS_PER_MC = db.Column(db.Double, nullable=False)
         
@@ -22,11 +22,11 @@ def get_detailed_sales_plan_classes():
     class DetailedSalesPlanRetail(db.Model):
         __tablename__ = 'final_detailed_retail_sales_plan'
         ID = db.Column(db.Integer, primary_key=True)
-        CHANNEL = db.Column(db.String(20), unique=True, nullable=False)
-        SITE = db.Column(db.String(20), unique=True, nullable=False)
+        GROUP = db.Column(db.String(20), nullable=False)
+        SITE = db.Column(db.String(20), nullable=False)
         PERIOD = db.Column(db.TIMESTAMP, nullable=False)
         MONTHLY_TARGET = db.Column(db.Double, nullable=False)
-        MGH_3 = db.Column(db.String(20), unique=True, nullable=False)
+        MGH_3 = db.Column(db.String(20), nullable=False)
         MGH_CH_PROP = db.Column(db.Float, nullable=False)
         SLS_PER_MC = db.Column(db.Double, nullable=False)
 
@@ -34,11 +34,11 @@ def get_detailed_sales_plan_classes():
     class DetailedSalesPlanEcommerce(db.Model):
         __tablename__ = 'final_detailed_ecommerce_sales_plan'
         ID = db.Column(db.Integer, primary_key=True)
-        CHANNEL = db.Column(db.String(20), unique=True, nullable=False)
-        SITE = db.Column(db.String(20), unique=True, nullable=False)
+        CHANNEL = db.Column(db.String(20), nullable=False)
+        SITE = db.Column(db.String(20), nullable=False)
         PERIOD = db.Column(db.TIMESTAMP, nullable=False)
         MONTHLY_TARGET = db.Column(db.Double, nullable=False)
-        MGH_3 = db.Column(db.String(20), unique=True, nullable=False)
+        MGH_3 = db.Column(db.String(20), nullable=False)
         MGH_CH_PROP = db.Column(db.Float, nullable=False)
         SLS_PER_MC = db.Column(db.Double, nullable=False)
 

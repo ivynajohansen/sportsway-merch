@@ -10,7 +10,7 @@ db = get_db()
 class RsMonthly(db.Model):
     __tablename__ = 'r_s_monthly_2023'
     ID = db.Column(db.Integer, primary_key=True)
-    CHANNEL = db.Column(db.String(20), unique=True, nullable=False)
+    CHANNEL = db.Column(db.String(20), nullable=False)
     PERIOD = db.Column(db.TIMESTAMP, nullable=False)
     TOTAL_SALES = db.Column(db.Double, nullable=False)
     PROPORTION = db.Column(db.Float, nullable=False)
