@@ -28,7 +28,9 @@ def reconciliation():
 
 @mfp_blueprint.route('/adjust-mc-3')
 def adjust_mc3():
-    return render_template('layout.html')
+    from controllers.McLv3Controller import display_page
+    return display_page()
+    # return render_template('mfp/mc-lv3-planning.html')
 
 @mfp_blueprint.route('/detailed-sales-plan')
 def detailed_sales_plan():

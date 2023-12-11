@@ -7,10 +7,10 @@ from db import get_db
 
 db = get_db()
 
-class RsMonthly(db.Model):
+class McLv3(db.Model):
     __tablename__ = 'mc_lv3_planning'
     ID = db.Column(db.Integer, primary_key=True)
-    MGH_3 = db.Column(db.String(20), unique=True, nullable=False)
+    MGH_3 = db.Column(db.String(20), nullable=False)
     PERIOD = db.Column(db.TIMESTAMP, nullable=False)
     PROPORTION = db.Column(db.Float, nullable=False)
     TOTAL_SALES_2023 = db.Column(db.Double, nullable=False)

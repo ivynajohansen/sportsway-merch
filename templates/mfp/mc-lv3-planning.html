@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class = "content-box">
+        
+        <h5 class="my-2 w-100 text-center">MC Lv 3 Planning</h5>
+        
+        <div id = "table-container" class = "mt-5">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        {% for month, mgh_3_data in organized_data.items() %}
+                            <th colspan="3">{{ month }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th></th>
+                        {% for month, mgh_3_data in organized_data.items() %}
+                            <th>%</th>
+                            <th>Value</th>
+                            <th>Forecast</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mgh_3_value in mgh_3_values %}
+                        <tr>
+                            <td>{{ mgh_3_value }}</td>
+                            {% for month, mgh_3_data in organized_data.items() %}
+                                <td>{{ mgh_3_data[mgh_3_value]['%']|round(2) }}</td>
+                                <td>{{ mgh_3_data[mgh_3_value]['Value']|round(2) }}</td>
+                                <td>{{ mgh_3_data[mgh_3_value]['Forecast']|round(2) }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    <tr class="table-total">
+                        <td>Total</td>
+                        {% for month, month_totals in totals.items() %}
+                            <td>{{ month_totals['%']|round(2) }}</td>
+                            <td>{{ month_totals['Value']|round(2) }}</td>
+                            <td>{{ month_totals['Forecast']|round(2) }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>  
+{% endblock %}

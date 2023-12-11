@@ -6,6 +6,8 @@ from faker import Faker
 from sqlalchemy.exc import IntegrityError
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash
+import pandas as pd
+from datetime import datetime
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 load_dotenv(Path(__file__).resolve().parents[1] / '.env')
@@ -80,9 +82,37 @@ def seed_company_target():
         except IntegrityError:
             db.session.rollback()
 
+# Function to seed Mc Lv3 Planning table with local CSV data
+def seed_mc_lv3_planning(csv_file_path):
+    from models.McLv3 import McLv3
+    data = pd.read_csv(csv_file_path)
+
+    column_mapping = {
+        'MGH_3': 'MGH_3',
+        'PERIOD': 'PERIOD',
+        'PROPORTION': 'PROPORTION',
+        'TOTAL_SALES_2023': 'TOTAL_SALES_2023',
+        'FORECASTED_SALES_2023': 'FORECASTED_SALES_2023',
+    }
+
+    data = pd.read_csv(csv_file_path)
+    data['PERIOD'] = pd.to_datetime(data['PERIOD'])
+
+    for _, entry in data.iterrows():
+        entry['PERIOD'] = entry['PERIOD'].to_pydatetime()
+        # Use a dictionary comprehension to include only keys present in column_mapping
+        item = McLv3(**{column: entry[key] for key, column in column_mapping.items()})
+        db.session.add(item)
+
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+
 # run this specific file to seed all tables. Comment some lines if not needed.
 if __name__ == '__main__':
     with app.app_context():
-        # seed_users(3)
-        # seed_company_target()
+        seed_users(3)
+        seed_company_target()
         seed_details()
+        seed_mc_lv3_planning('static/bigquery_data/mc_lv3_planning.csv')
