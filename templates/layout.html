@@ -2,20 +2,28 @@
 <html lang="en">
 
 <head>
-  <title>Eiger</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="csrf-token" content="{{ csrf_field }}">
-  <link rel="icon" href="{{ url_for('static', filename='images/favicon_io/favicon.ico') }}" type="image/x-icon">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
- 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
-  <link href="https://fonts.cdnfonts.com/css/noto-sans-bengali" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/solid.css">
-  
+    <title>Eiger</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_field }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon_io/favicon.ico') }}" type="image/x-icon">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link href="https://fonts.cdnfonts.com/css/noto-sans-bengali" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/solid.css">
+
+
+    <!-- AG GRID TESTING -->
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css" />
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css" />
+
+    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+    <script src="https://unpkg.com/ag-grid-enterprise"></script>
+
   {% block script %}{% endblock %}
 </head>
 
@@ -60,7 +68,7 @@
                         <a href="{{ url_for('mfp.adjust_mc3') }}" class="sidebar-submenu {% if currentRoute == '/mfp/adjust-mc-3' %} active {% endif %}">MC Lv 3 Planning</a>
                     </li>
                     <li>
-                        <a href="{{ url_for('mfp.detailed_sales_plan') }}" class="sidebar-submenu {% if currentRoute == '/mfp/details-breakdown' %} active {% endif %}">Details Sales Plan</a>
+                        <a href="{{ url_for('mfp.detailed_sales_plan') }}" class="sidebar-submenu {% if currentRoute == '/mfp/detailed-sales-plan' %} active {% endif %}">Details Sales Plan</a>
                     </li>
                 </ul>
             </div>

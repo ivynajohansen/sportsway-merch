@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<script src="{{ url_for('static', filename='js/reconciliation.js') }}"></script>
+
+<div class = "content-box">
+        
+    <h5 class="my-2 w-100 text-center">Reconciliation</h5>
+
+
+    <div id = "table-container" class = "mt-3">
+    </div>
+
+    <div class = "table-buttons mt-3">
+        <button class="sub-btn m-1" id="revert-btn">Revert Changes</button>
+        <button class="primary-btn m-1" id = "save-btn"><span id="btn-text">Save</span><span id="spinner"><i class="fas fa-spinner fa-spin"></i></span></button>
+    </div>
+    <div class = "message-box">
+        <div class = "w-100 d-flex justify-content-center mt-2">
+            <p class = "text-danger m-0 p-0" id = "error-message">.</p>
+        </div>
+        <div class = "w-100 d-flex justify-content-center mt-2">
+            <p class = "text-success m-0 p-0" id = "success-message"></p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

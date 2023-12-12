@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<script src="{{ url_for('static', filename='js/details-breakdown.js') }}"></script>
+
+<div class = "content-box">
+        
+    <h5 class="my-2 w-100 text-center">Details Sales Plan</h5>
+    
+    <div class = "table-filter-box mt-4">
+        <div id = "table-container" class = "dsp-table">
+        </div>
+        <div class = "pl-5 filter-container">
+            <h6 class = "my-3">Filter Mgh 3:</h6>
+
+            <label class="checkbox-container d-block">
+                <input type="checkbox" id="allCheckbox" checked> SELECT ALL
+            </label>
+
+            <label class="checkbox-container d-block">
+                <input type="checkbox" id="BAGS" checked> BAGS
+            </label>
+
+            <label class="checkbox-container d-block">
+                <input type="checkbox" id="APPAREL" checked> APPAREL
+            </label>
+
+            
+            <label class="checkbox-container d-block">
+                <input type="checkbox" id="FOOTWEAR" checked> FOOTWEAR
+            </label>
+
+            <label class="checkbox-container d-block">
+                <input type="checkbox" id="HEADWEAR" checked> HEADWEAR
+            </label>
+            <hr>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

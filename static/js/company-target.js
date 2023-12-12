@@ -23,19 +23,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchData() {
-        // fetch('/get-details', {
-        //     method: 'GET'
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //     originalDetails = data;
-        //     previous_year_target = data.PREV_YEAR;
-        //     inflationInput.value = data.INFLATION;
-        //     tgPercentageInput.value = data.TARGET_GROWTH_PERCENTAGE;
-        //     multiplierInput.value = tgPercentageInput.value / inflationInput.value;
+        fetch('/mfp/get-details', {
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(data => {
+            originalDetails = data;
+            previous_year_target = data.PREV_YEAR;
+            inflationInput.value = data.INFLATION;
+            tgPercentageInput.value = data.TARGET_GROWTH_PERCENTAGE;
+            multiplierInput.value = tgPercentageInput.value / inflationInput.value;
 
-        //     tgValueInput.value = ((100 + parseFloat(tgPercentageInput.value)) / 100) * previous_year_target;
-        //     tgFinalInput.value = parseFloat(tgValueInput.value).toFixed(2);
+            tgValueInput.value = ((100 + parseFloat(tgPercentageInput.value)) / 100) * previous_year_target;
+            tgFinalInput.value = data.FINAL_TARGET_GROWTH;
 
             fetch('/mfp/get-target', {
                 method: 'GET'
@@ -48,15 +48,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     tableContainer.removeChild(tableContainer.firstChild);
                 }
                 generateTable(data);
-                formatAllInputBoxes();
             })
             .catch(error => {
                 console.error('Error:', error);
             });
-        // })
-        // .catch(error => {
-        //     console.error('Error:', error);
-        // });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 
     }
 
@@ -347,6 +346,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 totalSalesInput.value = proportion / 100 * tempSum[2];
 
                 const id = rows[i].cells[2].getAttribute('data_id');
+                const columnName = rows[i].cells[2].getAttribute('data_column');
                 const newValue = parseFloat(proportionInput.value) || 0;
                 const newValue2 = parseFloat(totalSalesInput.value) || 0;
 

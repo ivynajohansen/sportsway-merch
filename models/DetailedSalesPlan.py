@@ -9,6 +9,7 @@ def get_detailed_sales_plan_classes():
 
     class DetailedSalesPlanWholesale(db.Model):
         __tablename__ = 'final_detailed_wholesale_sales_plan'
+        
         ID = db.Column(db.Integer, primary_key=True)
         CHANNEL = db.Column(db.String(20), nullable=False)
         SITE = db.Column(db.String(20), nullable=False)
