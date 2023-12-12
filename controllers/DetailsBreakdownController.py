@@ -26,7 +26,7 @@ def get_data():
                 DetailedSalesPlanWholesale.PERIOD,
                 DetailedSalesPlanEcommerce.PERIOD,
                 DetailedSalesPlanRetail.PERIOD
-            ).label('PERIOD'),  # Label as 'PERIOD'
+            ).label('PERIOD'),
             case(
                 (DetailedSalesPlanWholesale.CHANNEL.isnot(None), DetailedSalesPlanWholesale.CHANNEL),
                 (DetailedSalesPlanRetail.GROUP.isnot(None), DetailedSalesPlanRetail.GROUP),
@@ -38,7 +38,7 @@ def get_data():
         .group_by('PERIOD', 'channel_group')
         .union_all(
             db.session.query(
-                DetailedSalesPlanEcommerce.PERIOD.label('PERIOD'),  # Label as 'PERIOD'
+                DetailedSalesPlanEcommerce.PERIOD.label('PERIOD'),
                 case(
                     (DetailedSalesPlanEcommerce.CHANNEL.isnot(None), DetailedSalesPlanEcommerce.CHANNEL),
                     (DetailedSalesPlanRetail.GROUP.isnot(None), DetailedSalesPlanRetail.GROUP),
@@ -51,7 +51,7 @@ def get_data():
         )
         .union_all(
             db.session.query(
-                DetailedSalesPlanRetail.PERIOD.label('PERIOD'),  # Label as 'PERIOD'
+                DetailedSalesPlanRetail.PERIOD.label('PERIOD'),
                 case(
                     (DetailedSalesPlanRetail.GROUP.isnot(None), DetailedSalesPlanRetail.GROUP),
                     else_=None
@@ -83,7 +83,6 @@ def get_data():
         for row in result
     ]
 
-    # Now, you can return the result as JSON
     return jsonify(result_dict_list)
 
 def get_all_mgh3_values():
