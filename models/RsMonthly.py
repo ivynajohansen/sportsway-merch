@@ -11,7 +11,7 @@ class RsMonthly(db.Model):
     __tablename__ = 'r_s_monthly_2023'
     ID = db.Column(db.Integer, primary_key=True)
     CHANNEL = db.Column(db.String(20), nullable=False)
-    PERIOD = db.Column(db.TIMESTAMP, nullable=False)
+    PERIOD = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.current_timestamp())
     TOTAL_SALES = db.Column(db.Double, nullable=False)
     PROPORTION = db.Column(db.Float, nullable=False)
 

@@ -11,7 +11,7 @@ class Reconciliation(db.Model):
     __tablename__ = 'consolidated_plan_2023'
     ID = db.Column(db.Integer, primary_key=True)
     CHANNEL = db.Column(db.String(20), nullable=False)
-    PERIOD = db.Column(db.TIMESTAMP, nullable=False)
+    PERIOD = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.current_timestamp())
     PROPORTION = db.Column(db.Float, nullable=False)
     MONTHLY_TARGET = db.Column(db.Double, nullable=False)
 

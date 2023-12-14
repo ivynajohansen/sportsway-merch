@@ -1,7 +1,8 @@
 {% extends 'layout.html' %}
 {% block script %}
-<link href="https://unpkg.com/tabulator-tables@4.1.4/dist/css/tabulator.min.css" rel="stylesheet">
+<link href="https://unpkg.com/tabulator-tables@4.1.4/dist/css/bootstrap/tabulator_bootstrap.min.css" rel="stylesheet">
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.1.4/dist/js/tabulator.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/tabulator.css') }}" />
 <script src="{{ url_for('static', filename='js/interactive.js') }}"></script>
 <script src="{{ url_for('static', filename='js/rs-monthly-grid.js') }}"></script>
 {% endblock %}
@@ -13,7 +14,7 @@
 
    
     <!-- Your grid container -->
-    <div id="myGrid"></div>
+    <div id="grid-container" class = "mt-4"></div>
     
     <div id = "table-container" class = "mt-4">
     </div>

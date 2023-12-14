@@ -65,9 +65,12 @@ function updateData() {
     })
     .then(data => {
         console.log('API update successful:', data);
+        displaySuccessMessage(data.message);
+        fetchData();
     })
     .catch(error => {
         console.error('Error updating API:', error);
+        displayErrorMessage(error);
     });
 }
 
@@ -111,7 +114,28 @@ function initializeTables() {
 
     // Define columns for months
     var monthColumns = [
-        { title: "", field: "MONTH", width: 130, hozAlign: "center" }
+        {
+            title: "",
+            field: "MONTH",
+            width: 130,
+            hozAlign: "center",
+            sorter: function (a, b) {
+                // Define the order of months
+                var monthOrder = [
+                    'January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'
+                ];
+
+                if (a === 'Total') return 1;
+        
+                // Find the index of each month in the predefined order
+                var indexA = monthOrder.indexOf(a);
+                var indexB = monthOrder.indexOf(b);
+    
+                // Compare the indices to determine the sorting order
+                return indexA - indexB;
+            }
+        }
     ];
 
     //Check whether cells are editable based on the row 'total'
@@ -129,8 +153,36 @@ function initializeTables() {
     var channelColumns = uniqueChannels.map(channel => ({
         title: channel,
         columns: [
-            { title: "%", field: channel + "_PROPORTION", editor: "number", editable:editCheck },
-            { title: "Value", field: channel + "_TOTAL_SALES", editor: "number", editable:editCheck}
+            { 
+                title: "%",
+                field: channel + "_PROPORTION",
+                width: 100,
+                editor: "number",
+                editable: editCheck,
+                sorter: function (a, b, aRow, bRow) {
+                    var monthValue = aRow.getData()["MONTH"];
+                    var monthValue = bRow.getData()["MONTH"];
+                    if (monthValue === 'Total') return 1;
+                    if (monthValue === 'Total') return -1;
+
+                    return a - b;
+                },
+                headerSort:false //no need to sort proportion because result is the same when sorting total_sales
+            },
+            { 
+                title: "Value",
+                field: channel + "_TOTAL_SALES",
+                editor: "number",
+                editable: editCheck,
+                sorter: function (a, b, aRow, bRow) {
+                    var monthValue = aRow.getData()["MONTH"];
+                    var monthValue = bRow.getData()["MONTH"];
+                    if (monthValue === 'Total') return 1;
+                    if (monthValue === 'Total') return -1;
+
+                    return a - b;
+                }
+            }
         ]
     }));
 
@@ -149,7 +201,7 @@ function initializeTables() {
     // Create columns array by combining month and channel columns
     var columns = monthColumns.concat(channelColumns);
 
-    table = new Tabulator("#myGrid", {
+    table = new Tabulator("#grid-container", {
         data: modifiedData,
         layout: "fitColumns",
         responsiveLayout: "true",

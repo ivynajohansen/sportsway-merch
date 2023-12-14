@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, jsonify
 
 mfp_blueprint = Blueprint('mfp', __name__)
 
@@ -52,6 +52,16 @@ def get_details():
 def get_rs_monthly():
     from controllers.RsMonthlyController import get_data
     return get_data()
+@mfp_blueprint.route('/update-rs-monthly', methods=['PUT'])
+def handle_update_data():
+    try:
+        from controllers.RsMonthlyController import update_data
+        json_data = request.get_json()
+        return update_data(json_data)
+
+    except Exception as e:
+        return jsonify({'error': 'Error', 'message': str(e)})
+
 
 @mfp_blueprint.route('/get-retail-planning', methods=['GET'])
 def get_retail_planning():

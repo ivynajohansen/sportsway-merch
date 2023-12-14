@@ -1,0 +1,33 @@
+/* Data Table */
+
+#grid-container{
+    border-top: 1px solid #ececec;
+}
+
+.tabulator .tabulator-headers{
+    padding-top: 12px;
+    background: #fafafa;
+}
+
+.tabulator .tabulator-header .tabulator-col .tabulator-col-content {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.tabulator .tabulator-header .tabulator-col {
+    background: #fafafa;
+}
+
+.tabulator .tabulator-header .tabulator-col.tabulator-col-group .tabulator-col-group-cols {
+    border-top: 1px solid #ececec;
+}
+
+.tabulator-row {
+    border-bottom: 1px solid #ececec;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.tabulator * {
+    font-size: 12px;
+}
