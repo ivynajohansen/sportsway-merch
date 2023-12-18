@@ -168,26 +168,51 @@ function initializeTables() {
     // initialize data for the table to be modified if needed
     var modifiedData = originalData;
 
-    // Extract unique channels and months
+    // Extract unique channels
     var uniqueChannels = [...new Set(originalData.map(row => row.CHANNEL))];
     var columns = [
-        { title: "CHANNEL", field: "CHANNEL", frozen: true },
+        {   title: "CHANNEL", 
+            field: "CHANNEL", 
+            frozen: true,
+            sorter: function (a, b) {
+            
+                if (a === 'Total Sales') return 1;
+                if (b === 'Total Sales') return 1;
+
+                return a.localeCompare(b);
+            },
+        },
         {
             title: "PROPORTION",
             field: "PROPORTION",
             editor: "number",
             formatter: function(cell) {
-                // Get the raw value of the cell
                 var value = cell.getValue();
-                
                 // Format the value by appending '%' at the end
                 var formattedValue = value + '%';
-                
-                // Return the formatted value
                 return formattedValue;
             },
+            sorter: function (a, b, aRow, bRow) {
+                var channelValue = aRow.getData()["CHANNEL"];
+                var channelValue = bRow.getData()["CHANNEL"];
+                if (channelValue === 'Total Sales') return 1;
+                if (channelValue === 'Total Sales') return -1;
+
+                return a - b;
+            },
         },
-        { title: "TOTAL_SALES", field: "TOTAL_SALES", editor: "input" },
+        {   title: "TOTAL_SALES", 
+            field: "TOTAL_SALES", 
+            editor: "input",
+            sorter: function (a, b, aRow, bRow) {
+                var channelValue = aRow.getData()["CHANNEL"];
+                var channelValue = bRow.getData()["CHANNEL"];
+                if (channelValue === 'Total Sales') return 1;
+                if (channelValue === 'Total Sales') return -1;
+
+                return a - b;
+            },
+        },
         {
             title: "",
             field: "CHECKBOX",
