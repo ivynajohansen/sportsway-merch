@@ -1,11 +1,14 @@
 /* Data Table */
 
-#grid-container{
+#table-container{
     border-top: 1px solid #ececec;
 }
 
+.tabulator .tabulator-header, .tabulator .tabulator-header .tabulator-col {
+    background: #fafafa;
+}
+
 .tabulator .tabulator-headers{
-    padding-top: 12px;
     background: #fafafa;
 }
 

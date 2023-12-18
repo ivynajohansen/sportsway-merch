@@ -12,8 +12,10 @@ from models.RsMonthly import RsMonthly
 def get_data():
     try:
         data = RsMonthly.query.all()
+        sorted_data = sorted(data, key=lambda x: x.PERIOD)
+
         serialized_data = []
-        for item in data:
+        for item in sorted_data:
             serialized_data.append({
                 'ID': item.ID,
                 'CHANNEL': item.CHANNEL,

@@ -38,22 +38,41 @@ def detailed_sales_plan():
 
 # BACKEND
 
-@mfp_blueprint.route('/get-target', methods=['GET'])
+@mfp_blueprint.route('/get-company-target', methods=['GET'])
 def get_target():
     from controllers.TargetController import get_data
     return get_data()
+@mfp_blueprint.route('/update-company-target', methods=['PUT'])
+def handle_update_company_target():
+    try:
+        from controllers.TargetController import update_data
+        json_data = request.get_json()
+        return update_data(json_data)
+
+    except Exception as e:
+        return jsonify({'error': 'Error', 'message': str(e)})
 
 @mfp_blueprint.route('/get-details', methods=['GET'])
 def get_details():
     from controllers.DetailsController import get_data
     return get_data()
+@mfp_blueprint.route('/update-details', methods=['PUT'])
+def handle_update_details():
+    try:
+        from controllers.DetailsController import update_data
+        json_data = request.get_json()
+        return update_data(json_data)
+
+    except Exception as e:
+        return jsonify({'error': 'Error', 'message': str(e)})
+
 
 @mfp_blueprint.route('/get-rs-monthly', methods=['GET'])
 def get_rs_monthly():
     from controllers.RsMonthlyController import get_data
     return get_data()
 @mfp_blueprint.route('/update-rs-monthly', methods=['PUT'])
-def handle_update_data():
+def handle_update_rs_monthly():
     try:
         from controllers.RsMonthlyController import update_data
         json_data = request.get_json()
@@ -67,11 +86,29 @@ def handle_update_data():
 def get_retail_planning():
     from controllers.DetailedRetailPlanningController import get_data
     return get_data()
+@mfp_blueprint.route('/update-retail-planning', methods=['PUT'])
+def handle_update_retail_planning():
+    try:
+        from controllers.DetailedRetailPlanningController import update_data
+        json_data = request.get_json()
+        return update_data(json_data)
+
+    except Exception as e:
+        return jsonify({'error': 'Error', 'message': str(e)})
 
 @mfp_blueprint.route('/get-reconciliation', methods=['GET'])
 def get_reconciliation():
     from controllers.ReconciliationController import get_data
     return get_data()
+@mfp_blueprint.route('/update-reconciliation', methods=['PUT'])
+def handle_update_reconciliation():
+    try:
+        from controllers.ReconciliationController import update_data
+        json_data = request.get_json()
+        return update_data(json_data)
+
+    except Exception as e:
+        return jsonify({'error': 'Error', 'message': str(e)})
 
 
 @mfp_blueprint.route('/get-details-breakdown', methods=['GET'])

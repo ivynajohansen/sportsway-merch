@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 })
 
 function fetchData(){
-    var url = '/mfp/get-rs-monthly';
+    var url = '/mfp/get-retail-planning';
     fetch(url , {
         method: 'GET'
     })
@@ -46,7 +46,7 @@ function fetchData(){
 }
 
 function updateData() {
-    var url = '/mfp/update-rs-monthly';
+    var url = '/mfp/update-retail-planning';
     var updatedData = editedData;
 
     fetch(url, {
@@ -76,23 +76,23 @@ function updateData() {
 
 
 function initializeTables() {
-    // Extract unique channels and months
-    var uniqueChannels = [...new Set(originalData.map(row => row.CHANNEL))];
+    // Extract unique groups and months
+    var uniqueChannels = [...new Set(originalData.map(row => row.GROUP))];
     var uniqueMonths = [...new Set(originalData.map(row => new Date(row.PERIOD).toLocaleString('default', { month: 'long' })))];
 
-    // Organize data by channel and month
+    // Organize data by group and month
     var organizedData = {};
 
     originalData.forEach(row => {
         var month = new Date(row.PERIOD).toLocaleString('default', { month: 'long' });
 
-        if (!organizedData[row.CHANNEL]) {
-            organizedData[row.CHANNEL] = {};
+        if (!organizedData[row.GROUP]) {
+            organizedData[row.GROUP] = {};
         }
 
-        organizedData[row.CHANNEL][month] = {
+        organizedData[row.GROUP][month] = {
             PROPORTION: row.PROPORTION,
-            TOTAL_SALES: row.TOTAL_SALES,
+            MONTHLY_TARGET: row.MONTHLY_TARGET,
             PERIOD: row.PERIOD, //save the original timestamp for updating data to backend
         }; 
     });
@@ -103,11 +103,11 @@ function initializeTables() {
     var modifiedData = uniqueMonths.map(month => {
         var monthData = { MONTH: month };
     
-        uniqueChannels.forEach(channel => {
-            var channelData = organizedData[channel][month] || {};
-            monthData[channel + "_PROPORTION"] = channelData.PROPORTION !== undefined ? channelData.PROPORTION : "Data Missing";
-            monthData[channel + "_TOTAL_SALES"] = channelData.TOTAL_SALES !== undefined ? channelData.TOTAL_SALES : "Data Missing";
-            monthData[channel + "_PERIOD"] = channelData.PERIOD !== undefined ? channelData.PERIOD : "Data Missing";
+        uniqueChannels.forEach(group => {
+            var groupData = organizedData[group][month] || {};
+            monthData[group + "_PROPORTION"] = groupData.PROPORTION !== undefined ? groupData.PROPORTION : "Data Missing";
+            monthData[group + "_MONTHLY_TARGET"] = groupData.MONTHLY_TARGET !== undefined ? groupData.MONTHLY_TARGET : "Data Missing";
+            monthData[group + "_PERIOD"] = groupData.PERIOD !== undefined ? groupData.PERIOD : "Data Missing";
         });
         return monthData;
     });
@@ -149,13 +149,13 @@ function initializeTables() {
         return true; //editable
     }
 
-    // Define columns for channels
-    var channelColumns = uniqueChannels.map(channel => ({
-        title: channel,
+    // Define columns for groups
+    var groupColumns = uniqueChannels.map(group => ({
+        title: group,
         columns: [
             { 
                 title: "%",
-                field: channel + "_PROPORTION",
+                field: group + "_PROPORTION",
                 width: 100,
                 editor: "number",
                 editable: editCheck,
@@ -170,7 +170,7 @@ function initializeTables() {
             },
             { 
                 title: "Value",
-                field: channel + "_TOTAL_SALES",
+                field: group + "_MONTHLY_TARGET",
                 editor: "number",
                 editable: editCheck,
                 sorter: function (a, b, aRow, bRow) {
@@ -188,17 +188,17 @@ function initializeTables() {
     // add a row for total
     var totalsRow = { MONTH: "Total" };
     calculateTotals(modifiedData, uniqueChannels);
-    uniqueChannels.forEach(channel => {
-        totalsRow[channel + "_PROPORTION"] = totals[channel + "_PROPORTION"];
-        totalsRow[channel + "_TOTAL_SALES"] = totals[channel + "_TOTAL_SALES"];
+    uniqueChannels.forEach(group => {
+        totalsRow[group + "_PROPORTION"] = totals[group + "_PROPORTION"];
+        totalsRow[group + "_MONTHLY_TARGET"] = totals[group + "_MONTHLY_TARGET"];
     });
 
     modifiedData.push(totalsRow);
 
     console.log("Modified Data: ", modifiedData);
 
-    // Create columns array by combining month and channel columns
-    var columns = monthColumns.concat(channelColumns);
+    // Create columns array by combining month and group columns
+    var columns = monthColumns.concat(groupColumns);
 
     table = new Tabulator("#table-container", {
         data: modifiedData,
@@ -215,16 +215,16 @@ function initializeTables() {
             if (!isProgramEdit) {
                 var row = cell.getRow();
                 var field = cell.getField();
-                var channel = field.split('_')[0];
+                var group = field.split('_')[0];
     
                 if (field.endsWith('_PROPORTION')) {
                     updateTotalSales(row, cell.getField());
-                } else if (field.endsWith('_TOTAL_SALES')) {
+                } else if (field.endsWith('_MONTHLY_TARGET')) {
                     updateProportion(row, cell.getField());
                 }
 
                 calculateTotals(modifiedData, uniqueChannels);
-                pushChanges(row, channel);
+                pushChanges(row, group);
             }
     
             isProgramEdit = false;
@@ -233,30 +233,30 @@ function initializeTables() {
 }
 
 // keep track of changes to an array
-function pushChanges(row, channel) {
-    var period = row.getData()[channel + "_PERIOD"];
-    var proportion = row.getData()[channel + "_PROPORTION"];
-    var total_sales = row.getData()[channel + "_TOTAL_SALES"];
+function pushChanges(row, group) {
+    var period = row.getData()[group + "_PERIOD"];
+    var proportion = row.getData()[group + "_PROPORTION"];
+    var monthly_target = row.getData()[group + "_MONTHLY_TARGET"];
 
     var existingIndex = editedData.findIndex(function (item) {
-        return item.period === period && item.channel === channel;
+        return item.period === period && item.group === group;
     });
 
     if (existingIndex !== -1) {
         // Replace existing data with new values
         editedData[existingIndex] = {
             PERIOD: period,
-            CHANNEL: channel,
+            GROUP: group,
             PROPORTION: proportion,
-            TOTAL_SALES: total_sales
+            MONTHLY_TARGET: monthly_target
         };
     } else {
         // No existing data found, push the new data
         editedData.push({
             PERIOD: period,
-            CHANNEL: channel,
+            GROUP: group,
             PROPORTION: proportion,
-            TOTAL_SALES: total_sales
+            MONTHLY_TARGET: monthly_target
         });
     }
 }
@@ -265,28 +265,28 @@ function pushChanges(row, channel) {
 function calculateTotals(data, uniqueChannels) {
     var totalRow = data.find(row => row.MONTH === "Total"); // Implement the logic to find the total row
 
-    uniqueChannels.forEach(channel => {
+    uniqueChannels.forEach(group => {
         var totalProportion = 0;
         var totalSales = 0;
 
         data.forEach(monthData => {
             if (monthData.MONTH !== "Total") { //exclude the total row
-                totalProportion += parseFloat(monthData[channel + "_PROPORTION"]) || 0;
-                totalSales += parseFloat(monthData[channel + "_TOTAL_SALES"]) || 0;
+                totalProportion += parseFloat(monthData[group + "_PROPORTION"]) || 0;
+                totalSales += parseFloat(monthData[group + "_MONTHLY_TARGET"]) || 0;
             }
         });
 
-        totals[channel + "_PROPORTION"] = totalProportion.toFixed(2);
-        totals[channel + "_TOTAL_SALES_TEMPORARY"] = totalSales.toFixed(2); //total sales based on user input
+        totals[group + "_PROPORTION"] = totalProportion.toFixed(2);
+        totals[group + "_MONTHLY_TARGET_TEMPORARY"] = totalSales.toFixed(2); //total sales based on user input
 
         if (totalRow){
-            totalRow[channel + "_PROPORTION"] = totals[channel + "_PROPORTION"];
-            // no need to re-calculate total_sales because it is fixed
-            // totalRow[channel + "_TOTAL_SALES"] = totals[channel + "_TOTAL_SALES"];
+            totalRow[group + "_PROPORTION"] = totals[group + "_PROPORTION"];
+            // no need to re-calculate monthly_target because it is fixed
+            // totalRow[group + "_MONTHLY_TARGET"] = totals[group + "_MONTHLY_TARGET"];
             table.setData(data);
         }
         else {
-            totals[channel + "_TOTAL_SALES"] = totalSales.toFixed(2);
+            totals[group + "_MONTHLY_TARGET"] = totalSales.toFixed(2);
         }
     });
 }
@@ -294,11 +294,11 @@ function calculateTotals(data, uniqueChannels) {
 function updateTotalSales(row, field) {
     isProgramEdit = true;
     var proportionInput = row.getCell(field); //get the edited proportion cell
-    var totalSalesInput = row.getCell(field.replace('_PROPORTION', '_TOTAL_SALES')); //get the total_sales cell corresponding to the edited cell.
+    var totalSalesInput = row.getCell(field.replace('_PROPORTION', '_MONTHLY_TARGET')); //get the monthly_target cell corresponding to the edited cell.
 
     if (totalSalesInput) {
         var proportion = parseFloat(proportionInput.getValue()) || 0;
-        var totalSales = (proportion / 100) * totals[field.replace('_PROPORTION', '_TOTAL_SALES')];
+        var totalSales = (proportion / 100) * totals[field.replace('_PROPORTION', '_MONTHLY_TARGET')];
         totalSalesInput.setValue(totalSales.toFixed(2));
 
     }
@@ -306,7 +306,7 @@ function updateTotalSales(row, field) {
 
 function updateProportion(row, field) {
     isProgramEdit = true;
-    var proportionInput = row.getCell(field.replace('_TOTAL_SALES', '_PROPORTION'));
+    var proportionInput = row.getCell(field.replace('_MONTHLY_TARGET', '_PROPORTION'));
     var totalSalesInput = row.getCell(field);
 
     if (proportionInput) {

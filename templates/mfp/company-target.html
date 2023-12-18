@@ -1,8 +1,11 @@
 {% extends 'layout.html' %}
 
-{% block content %}
-    <script src="{{ url_for('static', filename='js/company-target.js') }}"></script>
+{% block script %}
+<script src="{{ url_for('static', filename='js/interactive.js') }}"></script>
+<script src="{{ url_for('static', filename='js/company-target-grid.js') }}"></script>
+{% endblock %}
 
+{% block content %}
     <div class = "content-box">
         
         <h5 class="my-2 w-100 text-center">Company Target</h5>
