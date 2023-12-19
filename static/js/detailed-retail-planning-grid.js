@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const revertButton = document.getElementById('revert-btn');
 
     revertButton.addEventListener('click', () => {
+        editedData = [];
         initializeTables();
     })
     
@@ -172,6 +173,7 @@ function initializeTables() {
                 title: "Value",
                 field: group + "_MONTHLY_TARGET",
                 editor: "number",
+                formatter:"money",
                 editable: editCheck,
                 sorter: function (a, b, aRow, bRow) {
                     var monthValue = aRow.getData()["MONTH"];

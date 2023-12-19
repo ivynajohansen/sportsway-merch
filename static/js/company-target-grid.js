@@ -20,11 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 
     revertButton.addEventListener('click', () => {
+        editedData = [];
         initializeTables();
     })
 
     recalculateButton.addEventListener('click', () => {
-        recalculate()
+        recalculate();
     });
     
     saveButton.addEventListener('click', () => {
@@ -165,11 +166,51 @@ function updateData() {
 
 
 function initializeTables() {
-    // initialize data for the table to be modified if needed
-    var modifiedData = originalData;
+    // initialize data for the table to be modified if needed. Use JSON.parse to prevent originalData changing according to modifiedData
+    var modifiedData = JSON.parse(JSON.stringify(originalData));
+
 
     // Extract unique channels
-    var uniqueChannels = [...new Set(originalData.map(row => row.CHANNEL))];
+    var uniqueChannels = [...new Set(modifiedData.map(row => row.CHANNEL))];
+
+    //Check whether cells are editable based on the row 'total'
+    var editCheck = function(cell){
+        //get row data
+        var data = cell.getRow().getData();
+    
+        if (data.CHANNEL === 'Total Sales') { //check if row's most left column is 'total'
+            return null;
+        }
+        else if (data.CHECKBOX === false){
+            return false;
+        }
+        return true; //editable
+        
+    }
+
+    function updateRowEditability(row) {
+        const cells = row.getCells();
+    
+        cells.forEach((cell) => {
+            const column = cell.getColumn();
+            
+            // Exclude the cell of CHECKBOX from the update
+            if (column.getField() !== 'CHECKBOX') {
+                const editable = editCheck(cell);
+                cell.setEditor("input", { editable: editable });
+            }
+        });
+    }
+    
+
+    // Initialize the Locking column so the default is unlocked or checked
+    modifiedData.forEach(function (row) {
+        if (row.CHANNEL !== 'Total Sales') {
+            row.CHECKBOX = true; // Set the CHECKBOX property
+        }
+    });
+   
+
     var columns = [
         {   title: "CHANNEL", 
             field: "CHANNEL", 
@@ -186,6 +227,7 @@ function initializeTables() {
             title: "PROPORTION",
             field: "PROPORTION",
             editor: "number",
+            editable: editCheck,
             formatter: function(cell) {
                 var value = cell.getValue();
                 // Format the value by appending '%' at the end
@@ -204,6 +246,8 @@ function initializeTables() {
         {   title: "TOTAL_SALES", 
             field: "TOTAL_SALES", 
             editor: "input",
+            formatter:"money",
+            editable: editCheck,
             sorter: function (a, b, aRow, bRow) {
                 var channelValue = aRow.getData()["CHANNEL"];
                 var channelValue = bRow.getData()["CHANNEL"];
@@ -214,29 +258,32 @@ function initializeTables() {
             },
         },
         {
-            title: "",
-            field: "CHECKBOX",
-            formatter: "tickCross",
-            align: "center",
-            width: 100,
-            cellClick: function (e, cell) {
-                // Handle checkbox click event
-                var isChecked = cell.getValue();
-                // Perform actions based on checkbox state
-                // For example: console.log('Checkbox is checked:', isChecked);
+            title: '',
+            field: 'CHECKBOX',
+            align: 'center',
+            width: 80,
+            formatter: (cell, formatterParams, onRendered) => {
+                const editable = editCheck(cell);
+                const row = cell.getRow();
+                const rowData = row.getData();
+        
+                // Add click event handler
+                onRendered(function () {
+                    cell.getElement().addEventListener('click', function () {
+                        // Update the row data when the checkbox is clicked
+                        rowData.CHECKBOX = !rowData.CHECKBOX; // Toggle the state
+                        // Update the cell value and force a redraw
+                        cell.setValue(rowData.CHECKBOX);
+                        // Perform editCheck on the row
+                        updateRowEditability(row);
+                    });
+                });
+                if (editable !== null) { //prevent total sales row from having a checkbox
+                    return `
+                        <input type="checkbox" ${rowData.CHECKBOX ? 'checked' : ''} />
+                    `;
+                }
             },
-            cellEdited: function (cell) {
-                // Handle checkbox state change
-                var isChecked = cell.getValue();
-                // Perform actions based on checkbox state
-                // For example: console.log('Checkbox is checked:', isChecked);
-            },
-            cellContext: function (e, cell) {
-                // Handle right-click context menu for the checkbox column
-                // You can add custom context menu options here
-                e.preventDefault(); // Prevent default right-click behavior
-                console.log('Right-clicked on checkbox column');
-            }
         },
         { title: "ID", field: "ID", visible: false },
     ];
@@ -285,33 +332,81 @@ function initializeTables() {
 
 // keep track of changes to an array
 function pushChanges(row, channel) {
-    var id = row.getData()["ID"];
-    var proportion = row.getData()["PROPORTION"];
-    var total_sales = row.getData()["TOTAL_SALES"];
+    if (channel !== 'Total Sales') {
+        var id = row.getData()["ID"];
+        var proportion = row.getData()["PROPORTION"];
+        var total_sales = row.getData()["TOTAL_SALES"];
 
-    var existingIndex = editedData.findIndex(function (item) {
-        return item.ID === id;
+        var existingIndex = editedData.findIndex(function (item) {
+            return item.ID === id;
+        });
+
+        if (existingIndex !== -1) {
+            // Replace existing data with new values
+            editedData[existingIndex] = {
+                ID: id,
+                CHANNEL: channel,
+                PROPORTION: proportion,
+                TOTAL_SALES: total_sales
+            };
+        } else {
+            // No existing data found, push the new data
+            editedData.push({
+                ID: id,
+                CHANNEL: channel,
+                PROPORTION: proportion,
+                TOTAL_SALES: total_sales
+            });
+        }
+    }
+}
+
+
+function recalculate() {
+    var uncheckedTotalSales = totals['TOTAL_SALES'],
+        uncheckedProportion = 100,
+        totalUncheckedProportionBefore = 0;
+
+    var rows = table.getRows();
+
+    rows.forEach(function (row) {
+        var data = row.getData();
+        var ProportionValue = parseFloat(data.PROPORTION) || 0;
+        var TotalSalesValue = parseFloat(data.TOTAL_SALES) || 0;
+
+        // Check if CHECKBOX is checked
+        if (data.CHECKBOX == true) {
+            uncheckedProportion -= ProportionValue;
+            uncheckedTotalSales -= TotalSalesValue;
+        }
+        else if (data.CHECKBOX == false){
+            totalUncheckedProportionBefore += ProportionValue;
+        }
     });
 
-    if (existingIndex !== -1) {
-        // Replace existing data with new values
-        editedData[existingIndex] = {
-            ID: id,
-            CHANNEL: channel,
-            PROPORTION: proportion,
-            TOTAL_SALES: total_sales
-        };
-    } else {
-        // No existing data found, push the new data
-        editedData.push({
-            ID: id,
-            CHANNEL: channel,
-            PROPORTION: proportion,
-            TOTAL_SALES: total_sales
-        });
-    }
+    console.log("uncheckedTotalSales: ", uncheckedTotalSales);
+    console.log("uncheckedProportion: ", uncheckedProportion);
 
-    console.log(editedData);
+    // Recalculate all rows where CHECKBOX is unchecked
+    rows.forEach(function (row) {
+        var data = row.getData();
+        var channel = data.CHANNEL;
+
+        var proportionInput = row.getCell('PROPORTION'); //get the proportion cell
+        var totalSalesInput = row.getCell('TOTAL_SALES'); //get the total_sales cell
+
+        // Check if CHECKBOX is unchecked
+        if (data.CHECKBOX == false && channel !== 'Total_Sales') {
+            var proportion = (parseFloat(data.PROPORTION) / totalUncheckedProportionBefore) * uncheckedProportion;
+            var totalSales = (proportion / 100) * totals['TOTAL_SALES'];
+
+            proportionInput.setValue(proportion);
+            totalSalesInput.setValue(totalSales); //update the calculated value to the cell
+            
+
+            pushChanges(row, channel);
+        }
+    });
 }
 
 
