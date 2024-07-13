@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 changesArray = [];
                 fetchData();
                 displaySuccessMessage('Update Succesfully');
-                triggerApi();
+                // triggerApi();
             } else {
                 throw new Error(`Server responded with status ${response.status}`);
             }
@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function triggerApi(){
-        fetch('https://asia-southeast2-poc-eiger.cloudfunctions.net/retail_bottom_up_planning', {
+        fetch('https://asia-southeast2-poc-sportsway.cloudfunctions.net/retail_bottom_up_planning', {
             method: 'POST',
             headers: {
                 'Content-Type': 'text/html; charset=utf-8',

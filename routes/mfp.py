@@ -111,9 +111,9 @@ def handle_update_reconciliation():
         return jsonify({'error': 'Error', 'message': str(e)})
 
 
-@mfp_blueprint.route('/get-details-breakdown', methods=['GET'])
-def get_details_breakdown():
-    from controllers.DetailsBreakdownController import get_data
-    return get_data()
+# @mfp_blueprint.route('/get-details-breakdown', methods=['GET'])
+# def get_details_breakdown():
+#     from controllers.DetailsBreakdownController import get_data
+#     return get_data()
 
 

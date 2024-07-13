@@ -6,7 +6,7 @@ pip install -r requirements.txt
 # RUN BEFORE PUSHING
 pip freeze > requirements.txt
 
-# For MIGRATING TABLES, FIRST MAKE A TABLE CALLED 'eiger'
+# For MIGRATING TABLES, FIRST MAKE A TABLE CALLED 'sportsway'
 python database/migrate.py db init
 python database/migrate.py db migrate
 python database/migrate.py db upgrade
